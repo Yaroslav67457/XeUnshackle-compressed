@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xex>
+  <format>
+    <compressed/>
+  </format>
+  <mediatypes>
+    <harddisk/>
+    <cd/>
+    <flash/>
+    <usbmass/>
+    <mu/>
+    <network/>
+    <ram/>
+    <svod/>
+    <allpackages/>
+  </mediatypes>
+  <gameregion system=""/>
+
+  <version major="2" minor="0" build="17559" qfe="0"/>
+  <titleid id ="0xFFFE07D1"/>
+
+  <privilege id="0"/>
+  <privilege id="6"/>
+
+  <!-- Only Dashlaunch helpers (no video / no font) -->
+  <section file="Media/launch-Hdd.xex" name="LXHDD" memory="RO"/>
+  <section file="Media/lhelper-Hdd.xex" name="LHHDD" memory="RO"/>
+  <section file="Media/launch-Mass0.xex" name="LXUSB" memory="RO"/>
+  <section file="Media/lhelper-Mass0.xex" name="LHUSB" memory="RO"/>
+</xex>
