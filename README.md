@@ -16,7 +16,7 @@
 This project was made by me (compiler) and Grok (code)
 
 ## How to build it and run it
-1. Download any `XDKSetupXenon*.exe` file (for example it will be XDKSEtupXenon*.exe file)
+1. Download any `XDKSetupXenon*.exe` file (for example it will be `XDKSetupXenon*.exe` file)
 2. Download Visual Studio 2022 installer (not VSCode!)
 3. Download `RXDK-360.exe` installer
 4. Setup `XDKSetupXenon*.exe` file 
