@@ -16,8 +16,8 @@
 This project was made by me (compiler) and Grok (code)
 
 ## How to build it and run it
-1. Download any `XDKSetupXenon*.exe` file (for example it will be `XDKSetupXenon*.exe` file)
-2. Download Visual Studio 2022 installer (not VSCode!)
+1. Download any `XDKSetupXenon*.exe` file ([click here to download recommended version](https://archive.org/details/xbox-360-sdk-21256.3_202204))
+2. Download Visual Studio 2022 installer ([click here to download](https://download.visualstudio.microsoft.com/download/pr/6bd63d7f-1818-4e03-a552-9feb11496c19/3ca0bed4faaee7ff81fd830db423cec9d1ecfe0a677f7d4bb29914fbecac6de6/vs_Professional.exe))
 3. Download `RXDK-360.exe` installer ([click here to download](https://github.com/Team-Resurgent/RXDK360))
 4. Setup `XDKSetupXenon*.exe` file 
 5. Setup Visual Studio 2022 
