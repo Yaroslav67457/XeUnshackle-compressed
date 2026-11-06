@@ -1,27 +1,79 @@
-# XeUnshackle Compressed is a fork of a XeUnshackle without any GUI and graphics using
+# XeUnshackle Compressed
 
-## Source files
-- `stdafx.h` — XDK types + all declarations
-- `stdafx.cpp` — one line include (can ignore)
-- `XeUnshackle.cpp` — **all** logic in one file with section comments
+Headless fork of [XeUnshackle](https://github.com/Byrom90/XeUnshackle) for use with the [Xbox360BadUpdate](https://github.com/grimdoomer/Xbox360BadUpdate) exploit.
 
-## Sections inside XeUnshackle.cpp (for those who want to edit XeUnshackle.cpp)
-1. Locale
-2. Utils (UART, mounts, files, XNotify, keys/MAC)
-3. HVFuncs
-4. FreebootPatches
-5. Dashlaunch
-6. main()
+No GUI, no intro video, no fonts. The app applies HV/Kernel patches, loads Dashlaunch, optionally runs BadStorage, saves console info, then exits to the dashboard.
 
-This project was made by me (compiler) and Grok (code)
+> **This is not a permanent softmod.**  
+> After power off or reboot the console returns to an unmodified state.  
+> **Backup your NAND first.** Do not flash modified NAND images.
 
-## How to build it and run it
-1. Download any `XDKSetupXenon*.exe` file ([click here to download recommended version](https://archive.org/details/xbox-360-sdk-21256.3_202204))
-2. Download Visual Studio 2022 installer ([click here to download](https://download.visualstudio.microsoft.com/download/pr/6bd63d7f-1818-4e03-a552-9feb11496c19/3ca0bed4faaee7ff81fd830db423cec9d1ecfe0a677f7d4bb29914fbecac6de6/vs_Professional.exe))
-3. Download `RXDK-360-Setup.exe` installer ([click here to download](https://release-assets.githubusercontent.com/github-production-release-asset/1364574546/d801ddcf-0243-4958-bb6f-31030aaca708?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-11-05T07%3A35%3A05Z&rscd=attachment%3B+filename%3DRXDK-360-Setup.exe&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-11-05T06%3A34%3A07Z&ske=2026-11-05T07%3A35%3A05Z&sks=b&skv=2018-11-09&sig=O67nB54dnI3m%2BOvmw57rWxia0TTMnqGKoKTyrCZnHu4%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc5Mzg2NDQxNiwibmJmIjoxNzkzODYwODE2LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.c-Wwa3Wzc0_YcAHa_r-X1LwmsqIbUK6bSNccXiKuLhA&response-content-disposition=attachment%3B%20filename%3DRXDK-360-Setup.exe&response-content-type=application%2Foctet-stream))
-4. Setup `XDKSetupXenon*.exe` file 
-5. Setup Visual Studio 2022 
-6. Setup RXDK-360
-7. In Visual Studio 2022, create a Xbox 360 Title project, and copy all files from repository to project (or just clone this repository using Git)
-8. Compile it using modern method with Clang builder and CL compiler (in `XDKSetupXenon*.exe` file)
-9. If build was succesful (it compiled but not copied/copied to Xbox 360 console), use `xextool.exe` and run `xextool.exe -m r -r a -o default.xex XeUnshackle.xex`
+## Features
+
+- Full freeboot-style HV and Kernel patches (same idea as upstream XeUnshackle)
+- Dashlaunch (`launch.xex`) loaded from embedded sections
+- BadStorage support if `GAME:\BadStorage.xex.dll` is present
+- Saves `GAME:\ConsoleInfo.txt` (CPUKey, DVDKey, motherboard type)
+- Optional backup of the original MAC address
+- Single main source file — easy to read and edit
+
+## Source layout
+
+| File | Role |
+|------|------|
+| `stdafx.h` | XDK types and declarations |
+| `stdafx.cpp` | One-line include |
+| `XeUnshackle.cpp` | All application logic in one file |
+
+### Sections inside `XeUnshackle.cpp`
+
+1. Locale  
+2. Utils (UART, mounts, files, XNotify, keys/MAC)  
+3. HVFuncs  
+4. FreebootPatches  
+5. Dashlaunch  
+6. `main()`
+
+## Requirements
+
+- Xbox 360 XDK (recommended: [XDK 21256.3 on Archive.org](https://archive.org/details/xbox-360-sdk-21256.3_202204))
+- Visual Studio 2022
+- [RXDK-360](https://github.com/Team-Resurgent/RXDK-360) (or another working Xbox 360 toolchain for VS 2022)
+
+## Build
+
+1. Install the Xbox 360 XDK.
+2. Install Visual Studio 2022.
+3. Install RXDK-360 and point it at your XDK.
+4. Open `XeUnshackle.vcxproj` in Visual Studio  
+   (or create an Xbox 360 Title project and copy these files into it).
+5. Build configuration: **Release_LTCG | Xbox 360**.
+6. Convert the raw XEX with xextool:
+
+```bat
+xextool.exe -m r -r a -o default.xex XeUnshackle.xex
+```
+
+- `-m r` — retail media flags  
+- `-r a` — all regions  
+- `default.xex` — file you deploy to the console  
+
+**Important:** do not copy the raw `XeUnshackle.xex` to the console. Always run xextool first. Using the raw file often causes "Unable to start game".
+
+## Usage
+
+1. Place `default.xex` in your BadUpdate payload folder (USB or internal drive).
+2. Run the BadUpdate exploit as usual.
+3. The app applies patches and returns to the dashboard.
+4. Optional: open `GAME:\ConsoleInfo.txt` to read CPUKey / DVDKey / board type.
+
+## Credits
+
+- [Byrom90 / XeUnshackle](https://github.com/Byrom90/XeUnshackle) — original project
+- [grimdoomer](https://github.com/grimdoomer/Xbox360BadUpdate) — Xbox360BadUpdate exploit
+- cOz, InvoxiPlayGames, and everyone credited in upstream XeUnshackle
+- Compressed / headless build: me + Grok (AI)
+
+## Disclaimer
+
+Released as-is. You are responsible for what you load and for any damage to your console or data. Use at your own risk.
